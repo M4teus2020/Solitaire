@@ -58,16 +58,8 @@ console.log(deck, piles);
 var elements = document.querySelectorAll('.card');
 
 for (i = 0; i < elements.length; ++i) {
-
-    elements[i].addEventListener('ondrag', function (a) {
-        console.log(a)
-
-
-    });
-
+    dragElement(elements[i]);
 }
-dragElement(document.getElementById("card"));
-
 
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
