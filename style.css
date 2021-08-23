@@ -16,10 +16,12 @@ body {
 }
 
 .card {
+    position:absolute;
     width: 110px;
     height: 155.83px;
     left: 17px;
     top: 229px;
+    background: #fff;
 }
 
 .card img {
