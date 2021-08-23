@@ -7,6 +7,7 @@ body {
     background-color: #F4F4F4;
 }
 .table {
+    user-select: none!important;
     justify-content: space-around;
     display: flex;
     width: 1005px;
@@ -21,7 +22,6 @@ body {
     height: 155.83px;
     left: 17px;
     top: 229px;
-    background: #fff;
 }
 
 .card img {

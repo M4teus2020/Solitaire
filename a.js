@@ -1,20 +1,43 @@
 const suits = ["C", "D", "S", "H"];
 const colors = { "C": "black", "S": "black", "D": "red", "H": "red" };
+let table = document.querySelector("#table");
 let deck = [];
 let piles = [[], [], [], [], [], [], []];
 
+function start() {
+    createDeck();
+
+    //deck.shuffle();
+
+    //giveCards();
+
+    console.log(deck, piles);
+
+}
+
 // Construction function das cartas
 function Card(number, suit) {
+    this.fliped = true,
     this.id = number + suit,
-        this.number = number,
-        this.suit = suit,
-        this.color = colors[suit],
-        this.fliped = false,
-        this.back = `./imgs/cards/02.png`,
-        this.front = `./imgs/cards/${this.number + this.suit}.svg`,
-        this.flip = function () {
-            this.fliped = !this.fliped;
+    createCardOnHTML(this.id);
+    this.html = document.getElementById(`${number + suit}`),
+    this.number = number,
+    this.suit = suit,
+    this.color = colors[suit],
+    this.back = `./imgs/cards/02.png`,
+    this.front = `./imgs/cards/${this.number + this.suit}.svg`,
+    this.flip = function () {
+        this.fliped = !this.fliped;
+        if(this.fliped) {
+            this.html.querySelector("img").src = `./imgs/cards/02.png`;
         }
+        else this.html.querySelector("img").src = `./imgs/cards/${this.number + this.suit}.svg`;
+    }
+    this.flip();
+}
+//adiciona a carta ao HTML
+function createCardOnHTML(id) {
+    table.innerHTML += `<div class="card" id="${id}"><img src="" alt="${id}"></div>`
 }
 
 // Cria o baralho
@@ -25,6 +48,12 @@ function createDeck() {
 
             deck.push(new Card(n, suits[s]));
         }
+    }
+    // Habilitar mover a carta na mesa
+    var elements = document.querySelectorAll('.card');
+
+    for (i = 0; i < elements.length; ++i) {
+        dragElement(elements[i]);
     }
 }
 
@@ -46,21 +75,7 @@ function giveCards() {
         piles[i].push(deck.splice(1, i + 1));
     }
 }
-
-
-
-createDeck();
-deck.shuffle();
-giveCards()
-
-console.log(deck, piles);
-
-var elements = document.querySelectorAll('.card');
-
-for (i = 0; i < elements.length; ++i) {
-    dragElement(elements[i]);
-}
-
+// Script mover carta pela mesa
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -97,3 +112,5 @@ function dragElement(elmnt) {
         document.onmousemove = null;
     }
 }
+
+start();
