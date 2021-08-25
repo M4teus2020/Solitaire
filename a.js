@@ -9,7 +9,7 @@ function start() {
 
     //deck.shuffle();
 
-    //giveCards();
+    giveCards();
 
     console.log(deck, piles);
 
@@ -17,23 +17,45 @@ function start() {
 
 // Construction function das cartas
 function Card(number, suit) {
+
     this.fliped = true,
+
     this.id = number + suit,
     createCardOnHTML(this.id);
     this.html = document.getElementById(`${number + suit}`),
+
     this.number = number,
     this.suit = suit,
     this.color = colors[suit],
+
     this.back = `./imgs/cards/02.png`,
     this.front = `./imgs/cards/${this.number + this.suit}.svg`,
+
+    this.posX = 500,
+    this.posY = 500,
+
+    this.position = function(x = this.posX, y = this.posY) {
+        console.log("a");
+        this.posX = x;
+        this.posY = y;
+        this.html.style.top = y + "px";
+        this.html.style.left = x + "px";
+    }
+
+    this.placeImg = function() {
+        if(this.fliped) {
+            this.html.querySelector("img").src = `./imgs/cards/${this.number + this.suit}.svg`;
+        }
+        else this.html.querySelector("img").src = `./imgs/cards/02.png`;
+    },
+
     this.flip = function () {
         this.fliped = !this.fliped;
-        if(this.fliped) {
-            this.html.querySelector("img").src = `./imgs/cards/02.png`;
-        }
-        else this.html.querySelector("img").src = `./imgs/cards/${this.number + this.suit}.svg`;
+        this.placeImg();
     }
-    this.flip();
+
+    
+    this.placeImg();
 }
 //adiciona a carta ao HTML
 function createCardOnHTML(id) {
@@ -73,6 +95,8 @@ Array.prototype.shuffle = function () {
 function giveCards() {
     for (i = 0; i < piles.length; i++) {
         piles[i].push(deck.splice(1, i + 1));
+        piles[i][0].forEach(card => card.position((17+110)*i, i*30));
+
     }
 }
 // Script mover carta pela mesa
