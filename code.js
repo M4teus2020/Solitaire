@@ -9,7 +9,7 @@ let piles = [[], [], [], [], [], [], []];
 function start() {
     createDeck();
 
-    //deck.shuffle();
+    deck.shuffle();
 
     giveCards();
 
@@ -35,7 +35,12 @@ function Card(number, suit) {
 
     this.posX = 16,
     this.posY = 40,
-    this.zIndex = 4
+    this.zIndex = 2,
+
+    this.setzIndex = function(zidx){
+        this.zIndex = zidx;
+        this.html.style.zIndex = 2+zidx; 
+    },
 
     this.position = function(x = this.posX, y = this.posY) {
         this.posX = x;
@@ -67,7 +72,6 @@ function createCardOnHTML(id) {
         carddiv.setAttribute("id", id);
         carddiv.appendChild(cardimg);
         table.append(carddiv);
-    //table.append += `<div class="card" id="${id}"><img src="" alt="${id}"></div>`
 }
 
 // Cria o baralho
@@ -106,22 +110,20 @@ function giveCards() {
         
         for(j = 0;j < piles[i][0].length;j++){
             console.log(j, j < piles[i][0].length)
-            piles[i][0][j].position((16+(34+110)*i), (260+j*40));
-            //piles[i][0][j].;
+            piles[i][0][j].position((16+(34+110)*i), (260+j*37));
+            piles[i][0][j].setzIndex(2+j);
         }
     }
 }
 // Script mover carta pela mesa
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
+    var startZIndex = 2;
     elmnt.onmousedown = dragMouseDown;
-
-
     function dragMouseDown(e) {
         e = e || window.event;
-        
         // get the mouse cursor position at startup:
+        startZIndex = elmnt.style.zIndex;
         pos3 = e.clientX;
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
@@ -140,12 +142,17 @@ function dragElement(elmnt) {
         // set the element's new position:
         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        elmnt.style.zIndex = "30";
     }
 
     function closeDragElement() {
         // stop moving when mouse button is released:
+        
+        elmnt.style.zIndex = startZIndex;
+        console.log(elmnt)
         document.onmouseup = null;
         document.onmousemove = null;
+
     }
 }
 
